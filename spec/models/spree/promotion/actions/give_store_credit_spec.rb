@@ -1,6 +1,7 @@
 require 'spec_helper'
 
 describe Spree::Promotion::Actions::GiveStoreCredit do
+
   let(:promotion) { create(:promotion) }
   subject { 
     a = Spree::Promotion::Actions::GiveStoreCredit.new

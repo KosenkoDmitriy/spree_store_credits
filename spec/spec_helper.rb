@@ -18,7 +18,6 @@ require File.expand_path('../dummy/config/environment.rb',  __FILE__)
 
 require 'rspec/rails'
 require 'factory_girl'
-require 'spree/testing_support/url_helpers'
 require 'database_cleaner'
 require 'ffaker'
 
@@ -28,6 +27,7 @@ Dir[File.join(File.dirname(__FILE__), 'support/**/*.rb')].each { |f| require f }
 
 # Requires factories and other useful helpers defined in spree_core.
 require 'spree/testing_support/authorization_helpers'
+require 'spree/testing_support/preferences'
 require 'spree/testing_support/capybara_ext'
 require 'spree/testing_support/controller_requests'
 require 'spree/testing_support/factories'
@@ -58,6 +58,10 @@ RSpec.configure do |config|
   # Adds convenient methods to request Spree's controllers
   # spree_get :index
   config.include Spree::TestingSupport::ControllerRequests, type: :controller
+  config.include Spree::TestingSupport::Preferences
+  config.include Rack::Test::Methods, :type => :feature
+  config.include FactoryGirl::Syntax::Methods
+  config.include Capybara::DSL
 
   # == Mock Framework
   #
@@ -93,12 +97,6 @@ RSpec.configure do |config|
   config.after :each do
     DatabaseCleaner.clean
   end
-
-  config.include FactoryGirl::Syntax::Methods
-  config.include Spree::TestingSupport::UrlHelpers
-  config.include Spree::TestingSupport::ControllerRequests, :type => :controller
-  config.include Rack::Test::Methods, :type => :feature
-  config.include Capybara::DSL
 
   config.fail_fast = ENV['FAIL_FAST'] || false
   config.order = "random"
