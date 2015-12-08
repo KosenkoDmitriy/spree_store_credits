@@ -118,9 +118,9 @@ module Spree
     end
 
     context "consume_users_credit" do
-      let(:store_credit_1) { mock_model(StoreCredit, :amount => 100, :remaining_amount => 100) }
-      let(:store_credit_2) { mock_model(StoreCredit, :amount => 10, :remaining_amount => 5) }
-      let(:store_credit_3) { mock_model(StoreCredit, :amount => 60, :remaining_amount => 50 ) }
+      let(:store_credit_1) { double(StoreCredit, :amount => 100, :remaining_amount => 100) }
+      let(:store_credit_2) { double(StoreCredit, :amount => 10, :remaining_amount => 5) }
+      let(:store_credit_3) { double(StoreCredit, :amount => 60, :remaining_amount => 50 ) }
 
       before { order.stub(:completed? => true, :store_credit_amount => 35, :total => 50) }
 
@@ -203,12 +203,12 @@ module Spree
 
       it "should return false when total is greater than zero and payments are empty" do
         order.stub(:pending_payments => [])
-        order.process_payments!.should be_false
+        expect(order.process_payments!).to be false
       end
 
       it "should process payment when total is zero and payments is not empty" do
-        order.stub(:pending_payments => [mock_model(Payment)])
-        order.should_receive(:process_payments_without_credits!)
+        order.stub(:pending_payments => [double(Payment)])
+        expect(order).to receive(:process_payments_without_credits!)
         order.process_payments!
       end
 
@@ -224,14 +224,14 @@ module Spree
         before { reset_spree_preferences { |config| config.use_store_credit_minimum = 100 } }
 
         it "should be invalid" do
-          order.valid?.should be_false
+          expect(order.valid?).to be false
           order.errors.should_not be_nil
         end
 
         it "should be valid when store_credit_amount is 0" do
         order.instance_variable_set(:@store_credit_amount, 0)
           order.stub(:item_total => 50)
-          order.valid?.should be_true
+          expect(order.valid?).to be true
           order.errors.count.should == 0
         end
 
@@ -241,7 +241,7 @@ module Spree
         before { reset_spree_preferences { |config| config.use_store_credit_minimum = 10 } }
 
         it "should be valid when item total is greater than limit" do
-          order.valid?.should be_true
+          expect(order.valid?).to be true
           order.errors.count.should == 0
         end
 
