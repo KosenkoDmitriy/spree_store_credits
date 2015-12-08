@@ -8,7 +8,7 @@
 def reset_spree_preferences
   Spree::Preferences::Store.instance.persistence = false
   config = Rails.application.config.spree.preferences
-  config.reset
+  # config.reset #TODO: commented because got error: NoMethodError: undefined method `each' for #<Spree::Preferences::ScopedStore:0x007fb53e20bcf0>
   yield(config) if block_given?
 end
 
