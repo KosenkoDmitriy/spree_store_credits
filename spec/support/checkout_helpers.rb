@@ -5,7 +5,7 @@ def add_mug_to_cart
 end
 
 def setup_new_user_and_sign_up(email)
-  create(:promotion_for_store_credits, :event_name => "spree.user.signup", :created_at => 2.days.ago)
+  create(:promotion_for_store_credits, path: "spree.user.signup", :created_at => 2.days.ago)
   lambda {
     visit spree.signup_path
 
