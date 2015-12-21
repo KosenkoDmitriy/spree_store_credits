@@ -1,7 +1,7 @@
 module SpreeStoreCredits
   class Engine < Rails::Engine
     require 'spree/core'
-    isolate_namespace Spree
+    #isolate_namespace Spree
     engine_name 'spree_store_credits'
 
     # use rspec for tests
